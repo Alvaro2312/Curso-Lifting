@@ -1,5 +1,5 @@
-import React from 'react';
-import { Check, Layers, Zap, Shield } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Check, Layers, Camera, Upload } from 'lucide-react';
 import liftingTradicionalImg from '../assets/lifting-tradicional.png';
 import liftingCoreanoImg from '../assets/lifting-coreano.jpg';
 
@@ -8,6 +8,64 @@ interface TechniqueComparisonProps {
 }
 
 export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
+  const [customTradImage, setCustomTradImage] = useState<string | null>(null);
+  const [customCoreanoImage, setCustomCoreanoImage] = useState<string | null>(null);
+  const [isDraggingTrad, setIsDraggingTrad] = useState(false);
+  const [isDraggingCoreano, setIsDraggingCoreano] = useState(false);
+
+  const tradInputRef = useRef<HTMLInputElement>(null);
+  const coreanoInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    try {
+      const savedTrad = localStorage.getItem('warmi_trad_image');
+      if (savedTrad) setCustomTradImage(savedTrad);
+      const savedCoreano = localStorage.getItem('warmi_coreano_image');
+      if (savedCoreano) setCustomCoreanoImage(savedCoreano);
+    } catch {
+      // localStorage may fail in some environments
+    }
+  }, []);
+
+  const handleFile = (file: File, type: 'trad' | 'coreano') => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target?.result as string;
+      if (result) {
+        if (type === 'trad') {
+          setCustomTradImage(result);
+          try {
+            localStorage.setItem('warmi_trad_image', result);
+          } catch {
+            // Ignore storage quota error
+          }
+        } else {
+          setCustomCoreanoImage(result);
+          try {
+            localStorage.setItem('warmi_coreano_image', result);
+          } catch {
+            // Ignore storage quota error
+          }
+        }
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDrop = (e: React.DragEvent, type: 'trad' | 'coreano') => {
+    e.preventDefault();
+    if (type === 'trad') setIsDraggingTrad(false);
+    else setIsDraggingCoreano(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFile(e.dataTransfer.files[0], type);
+    }
+  };
+
+  const tradImageSrc = customTradImage || liftingTradicionalImg;
+  const coreanoImageSrc = customCoreanoImage || liftingCoreanoImg;
+
   return (
     <section 
       id="tecnicas" 
@@ -61,18 +119,56 @@ export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
 
               {/* Visual image */}
               <div 
-                className="rounded-2xl overflow-hidden h-48 sm:h-56 relative border"
+                className={`rounded-2xl overflow-hidden h-48 sm:h-56 relative border group transition-all duration-300 ${
+                  isDraggingTrad ? 'ring-4 ring-[var(--accent-gold)] scale-[1.02]' : ''
+                }`}
                 style={{ borderColor: 'var(--border-subtle)' }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setIsDraggingTrad(true);
+                }}
+                onDragLeave={() => setIsDraggingTrad(false)}
+                onDrop={(e) => handleDrop(e, 'trad')}
               >
                 <img
-                  src={liftingTradicionalImg}
+                  src={tradImageSrc}
                   alt="Resultado real de técnica tradicional de lifting de pestañas"
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                <span className="absolute bottom-3 left-3 text-xs font-medium text-white/90 bg-black/50 px-2.5 py-1 rounded-md backdrop-blur-xs border border-white/10">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                <span className="absolute bottom-3 left-3 text-xs font-medium text-white/90 bg-black/50 px-2.5 py-1 rounded-md backdrop-blur-xs border border-white/10 pointer-events-none">
                   Curvatura uniforme natural
                 </span>
+
+                {/* Drag & drop overlay */}
+                {isDraggingTrad && (
+                  <div className="absolute inset-0 bg-black/75 backdrop-blur-xs flex flex-col items-center justify-center gap-2 text-white z-20 pointer-events-none">
+                    <Upload className="w-8 h-8 text-[var(--accent-gold)] animate-bounce" />
+                    <p className="font-semibold text-xs">Suelta aquí tu imagen</p>
+                  </div>
+                )}
+
+                {/* Input and button to change photo */}
+                <input
+                  ref={tradInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      handleFile(e.target.files[0], 'trad');
+                    }
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => tradInputRef.current?.click()}
+                  title="Cambiar foto de técnica tradicional"
+                  className="absolute top-3 right-3 opacity-80 group-hover:opacity-100 transition-opacity bg-black/65 hover:bg-black/85 backdrop-blur-md border border-white/20 text-white rounded-full px-2.5 py-1.5 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-lg z-10"
+                >
+                  <Camera className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
+                  <span className="text-[11px]">Cambiar foto</span>
+                </button>
               </div>
 
               {/* Checklist */}
@@ -143,17 +239,25 @@ export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
 
               {/* Visual image */}
               <div 
-                className="rounded-2xl overflow-hidden h-48 sm:h-56 relative border"
+                className={`rounded-2xl overflow-hidden h-48 sm:h-56 relative border group transition-all duration-300 ${
+                  isDraggingCoreano ? 'ring-4 ring-[var(--accent-gold)] scale-[1.02]' : ''
+                }`}
                 style={{ borderColor: 'var(--border-primary)' }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setIsDraggingCoreano(true);
+                }}
+                onDragLeave={() => setIsDraggingCoreano(false)}
+                onDrop={(e) => handleDrop(e, 'coreano')}
               >
                 <img
-                  src={liftingCoreanoImg}
+                  src={coreanoImageSrc}
                   alt="Resultado real de técnica coreana de lifting de pestañas con acabado glossy"
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none" />
                 <span 
-                  className="absolute bottom-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-md backdrop-blur-xs border"
+                  className="absolute bottom-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-md backdrop-blur-xs border pointer-events-none"
                   style={{
                     backgroundColor: 'rgba(0, 0, 0, 0.65)',
                     color: 'var(--accent-gold-light)',
@@ -162,6 +266,36 @@ export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
                 >
                   Elevación extrema de raíz & acabado glossy
                 </span>
+
+                {/* Drag & drop overlay */}
+                {isDraggingCoreano && (
+                  <div className="absolute inset-0 bg-black/75 backdrop-blur-xs flex flex-col items-center justify-center gap-2 text-white z-20 pointer-events-none">
+                    <Upload className="w-8 h-8 text-[var(--accent-gold)] animate-bounce" />
+                    <p className="font-semibold text-xs">Suelta aquí tu imagen</p>
+                  </div>
+                )}
+
+                {/* Input and button to change photo */}
+                <input
+                  ref={coreanoInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      handleFile(e.target.files[0], 'coreano');
+                    }
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => coreanoInputRef.current?.click()}
+                  title="Cambiar foto de técnica coreana"
+                  className="absolute top-3 right-3 opacity-80 group-hover:opacity-100 transition-opacity bg-black/65 hover:bg-black/85 backdrop-blur-md border border-white/20 text-white rounded-full px-2.5 py-1.5 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-lg z-10"
+                >
+                  <Camera className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
+                  <span className="text-[11px]">Cambiar foto</span>
+                </button>
               </div>
 
               {/* Checklist */}

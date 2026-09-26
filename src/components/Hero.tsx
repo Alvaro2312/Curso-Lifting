@@ -1,18 +1,79 @@
-import React from 'react';
-import { GraduationCap, Calendar, MessageCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { GraduationCap, MessageCircle, ArrowRight, Camera, Upload } from 'lucide-react';
 import { COURSE_INFO } from '../data/courseData';
+
+const CANDIDATE_HERO_IMAGES = [
+  '/images/Diseño sin título (83).png',
+  '/Diseño sin título (83).png',
+  '/images/Diseño%20sin%20t%C3%ADtulo%20(83).png',
+  '/images/lifting-hero.png',
+  '/images/lifting-hero.jpg',
+  'https://images.unsplash.com/photo-1583001931096-959e9a1a6223?q=80&w=900&auto=format&fit=crop'
+];
 
 interface HeroProps {
   onOpenReservation: () => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ onOpenReservation }) => {
+  const [imageIdx, setImageIdx] = useState(0);
+  const [customImage, setCustomImage] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('warmi_hero_image');
+      if (saved) {
+        setCustomImage(saved);
+      }
+    } catch {
+      // localStorage may fail in private mode
+    }
+  }, []);
+
   const handleWhatsApp = () => {
     const message = encodeURIComponent(
       "¡Hola Tiare y Álvaro! Me interesa el Curso de Lifting de Pestañas de Cero a Pro (Tradicional, Coreano y Redes). Quiero saber sobre los cupos disponibles."
     );
     window.open(`https://wa.me/${COURSE_INFO.whatsappNumber}?text=${message}`, '_blank');
   };
+
+  const handleFile = (file: File) => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target?.result as string;
+      if (result) {
+        setCustomImage(result);
+        try {
+          localStorage.setItem('warmi_hero_image', result);
+        } catch {
+          // Ignore storage quota error
+        }
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const currentImageSrc = customImage || CANDIDATE_HERO_IMAGES[imageIdx] || CANDIDATE_HERO_IMAGES[CANDIDATE_HERO_IMAGES.length - 1];
 
   return (
     <section className="relative overflow-hidden pt-8 pb-16 lg:pt-14 lg:pb-24 bg-gradient-to-b from-[var(--bg-primary)] via-[var(--bg-secondary)] to-[var(--bg-primary)] transition-colors duration-300">
@@ -83,18 +144,58 @@ export const Hero: React.FC<HeroProps> = ({ onOpenReservation }) => {
             <div className="relative mx-auto max-w-md lg:max-w-none">
               {/* Main Image Card */}
               <div 
-                className="relative rounded-3xl overflow-hidden shadow-2xl border"
+                className={`relative rounded-3xl overflow-hidden shadow-2xl border transition-all duration-300 group ${
+                  isDragging ? 'ring-4 ring-[var(--accent-gold)] scale-[1.02]' : ''
+                }`}
                 style={{
                   borderColor: 'var(--border-primary)',
                   backgroundColor: 'var(--bg-card)',
                 }}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
               >
                 <img
-                  src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=900&auto=format&fit=crop"
+                  src={currentImageSrc}
                   alt="Resultado profesional de lifting de pestañas técnica coreana"
+                  onError={() => {
+                    if (imageIdx < CANDIDATE_HERO_IMAGES.length - 1) {
+                      setImageIdx(prev => prev + 1);
+                    }
+                  }}
                   className="w-full h-[460px] object-cover object-center transform hover:scale-105 transition-transform duration-700"
                   referrerPolicy="no-referrer"
                 />
+
+                {/* Drag & drop overlay indicator */}
+                {isDragging && (
+                  <div className="absolute inset-0 bg-black/70 backdrop-blur-xs flex flex-col items-center justify-center gap-3 text-white z-20 pointer-events-none">
+                    <Upload className="w-10 h-10 text-[var(--accent-gold)] animate-bounce" />
+                    <p className="font-semibold text-sm">Suelta aquí tu imagen para aplicarla</p>
+                  </div>
+                )}
+
+                {/* Subtle Action to upload or replace image */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      handleFile(e.target.files[0]);
+                    }
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  title="Cambiar foto de la cabecera"
+                  className="absolute bottom-3 right-3 opacity-80 group-hover:opacity-100 transition-opacity bg-black/65 hover:bg-black/85 backdrop-blur-md border border-white/20 text-white rounded-full p-2.5 sm:px-3 sm:py-2 text-xs font-medium flex items-center gap-2 cursor-pointer shadow-lg z-10"
+                >
+                  <Camera className="w-4 h-4 text-[var(--accent-gold)]" />
+                  <span className="hidden sm:inline">Cambiar foto</span>
+                </button>
               </div>
             </div>
           </div>
