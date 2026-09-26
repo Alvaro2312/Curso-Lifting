@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="100%" height="100%">
+  <defs>
+    <!-- Brand colors from Warmi image -->
+    <!-- Primary Rose: #BA5E76 -->
+    <!-- Accent Shadow: #9E455D -->
+    <!-- Soft Rose: #D4849A -->
+  </defs>
+
+  <g id="warmi-graphic" transform="translate(0, 0)">
+    <!-- 1. Elegant Face Profile -->
+    <path 
+      d="M 445 155 
+         C 420 220, 400 255, 395 268 
+         C 388 273, 345 292, 332 300 
+         C 324 306, 326 316, 338 320 
+         C 348 324, 355 328, 352 334 
+         C 346 340, 332 344, 334 353 
+         C 336 360, 348 362, 352 368 
+         C 355 375, 336 385, 334 394 
+         C 331 405, 344 416, 350 422 
+         C 362 432, 400 445, 435 448 
+         C 460 450, 472 465, 478 480 
+         C 482 490, 465 510, 430 500"
+      fill="none" 
+      stroke="#BA5E76" 
+      stroke-width="16" 
+      stroke-linecap="round" 
+      stroke-linejoin="round" 
+    />
+
+    <!-- 2. Closed Eyelash Arc & Lash Strokes -->
+    <path 
+      d="M 400 274 Q 425 290 452 284" 
+      fill="none" 
+      stroke="#BA5E76" 
+      stroke-width="11" 
+      stroke-linecap="round" 
+    />
+    <!-- Lashes flicking down and out -->
+    <path d="M 408 285 Q 403 298 398 305" fill="none" stroke="#BA5E76" stroke-width="8" stroke-linecap="round" />
+    <path d="M 418 288 Q 415 303 411 310" fill="none" stroke="#BA5E76" stroke-width="8" stroke-linecap="round" />
+    <path d="M 428 289 Q 427 305 424 312" fill="none" stroke="#BA5E76" stroke-width="8" stroke-linecap="round" />
+    <path d="M 438 288 Q 440 303 440 310" fill="none" stroke="#BA5E76" stroke-width="8" stroke-linecap="round" />
+    <path d="M 447 285 Q 452 298 454 305" fill="none" stroke="#BA5E76" stroke-width="7" stroke-linecap="round" />
+
+    <!-- 3. Stylized 5-Petal Lotus / Orchid Flower -->
+    <!-- Petal 1: Top (points toward ~11 o'clock) -->
+    <!-- Left facet of petal 1 -->
+    <path d="M 555 260 C 510 220, 475 180, 532 165 C 550 195, 555 230, 555 260 Z" fill="#BA5E76" />
+    <!-- Right facet of petal 1 -->
+    <path d="M 555 260 C 555 210, 545 180, 532 165 C 560 185, 575 220, 555 260 Z" fill="#A44B63" />
+
+    <!-- Petal 2: Top-Right (points toward ~1:30 o'clock) -->
+    <path d="M 555 260 C 585 195, 620 195, 690 225 C 645 255, 600 265, 555 260 Z" fill="#BA5E76" />
+    <path d="M 555 260 C 600 230, 640 225, 690 225 C 645 240, 600 255, 555 260 Z" fill="#A44B63" opacity="0.4" />
+
+    <!-- Petal 3: Right (points toward ~3:30 o'clock) -->
+    <path d="M 555 260 C 610 270, 675 285, 645 372 C 600 330, 575 295, 555 260 Z" fill="#BA5E76" />
+    <path d="M 555 260 C 625 295, 655 330, 645 372 C 615 330, 585 295, 555 260 Z" fill="#A44B63" opacity="0.5" />
+
+    <!-- Petal 4: Left-bottom (points toward ~8:30 o'clock) -->
+    <path d="M 555 260 C 510 275, 470 305, 472 328 C 500 305, 530 280, 555 260 Z" fill="#BA5E76" />
+
+    <!-- 4. Graceful Flowing Hair Ribbon Stem -->
+    <!-- Main stem draping along the neck -->
+    <path 
+      d="M 545 285 
+         C 555 330, 550 400, 538 460 
+         C 525 520, 500 565, 478 585 
+         C 488 555, 515 505, 524 450 
+         C 532 390, 535 335, 525 290 Z" 
+      fill="#BA5E76" 
+    />
+
+    <!-- Secondary ribbon strand peeling to the right -->
+    <path 
+      d="M 542 360 
+         C 565 390, 605 415, 605 460 
+         C 605 488, 595 505, 582 510 
+         C 592 485, 592 460, 572 430 
+         C 555 405, 542 380, 538 360 Z" 
+      fill="#D4849A" 
+    />
+  </g>
+</svg>

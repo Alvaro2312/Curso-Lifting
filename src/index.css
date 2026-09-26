@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1, h2, h3, .font-serif-luxury {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+}
+
+/* =========================================================================
+   PALETA DEFINITIVA: BLANCO, MORADO REAL & PALO ROSA
+   ========================================================================= */
+
+:root, [data-theme="blanco-morado-palorosa"] {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #FAF6FA;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FDF8FB;
+  --bg-subtle: #F6EDF3;
+  --bg-input: #FFFFFF;
+  --text-primary: #280D35;
+  --text-secondary: #583363;
+  --text-muted: #8A6492;
+  --accent-purple: #581C87;
+  --accent-purple-light: #7E22CE;
+  --accent-gold: #C25E7C; /* Palo Rosa refinado */
+  --accent-gold-light: #FCE8EF;
+  --accent-gold-dark: #913454;
+  --accent-gold-glow: rgba(194, 94, 124, 0.22);
+  --border-primary: rgba(194, 94, 124, 0.32);
+  --border-gold: rgba(194, 94, 124, 0.45);
+  --border-subtle: #F1E2EB;
+  --border-card: #EAD4DF;
+  --badge-bg: #FDF1F5;
+  --badge-text: #8C2449;
+  --badge-border: #F7CDDC;
+  --btn-primary-bg: #581C87; /* Morado Real */
+  --btn-primary-text: #FFFFFF;
+  --btn-primary-hover: #6B21A8;
+  --card-shadow: 0 16px 36px -12px rgba(88, 28, 135, 0.08), 0 0 0 1px rgba(194, 94, 124, 0.18);
+  --nav-bg: rgba(255, 255, 255, 0.96);
+  --nav-border: #F1E2EB;
+  --announcement-bg: #3B0764; /* Morado Imperial para barra superior */
+  --announcement-border: #581C87;
+  --footer-bg: #F9F5F8;
+  --footer-border: #EAD4DF;
+  --gradient-gold: linear-gradient(135deg, #581C87 0%, #8A2B64 50%, #C25E7C 100%);
+  --hero-glow: rgba(194, 94, 124, 0.14);
+}
+
+/* =========================================================================
+   UTILITY HELPER CLASSES
+   ========================================================================= */
+
+.bg-theme-main { background-color: var(--bg-primary); }
+.bg-theme-secondary { background-color: var(--bg-secondary); }
+.bg-theme-card { background-color: var(--bg-card); }
+.bg-theme-subtle { background-color: var(--bg-subtle); }
+.bg-theme-input { background-color: var(--bg-input); }
+
+.text-theme-primary { color: var(--text-primary); }
+.text-theme-secondary { color: var(--text-secondary); }
+.text-theme-muted { color: var(--text-muted); }
+.text-theme-gold { color: var(--accent-gold); }
+
+.border-theme-primary { border-color: var(--border-primary); }
+.border-theme-subtle { border-color: var(--border-subtle); }
+.border-theme-card { border-color: var(--border-card); }
+
+.badge-theme {
+  background-color: var(--badge-bg);
+  color: var(--badge-text);
+  border: 1px solid var(--badge-border);
+}
+
+.btn-theme-primary {
+  background: linear-gradient(to right, #581C87, #9333EA, #4338CA);
+  color: #FFFFFF;
+  border: 1px solid rgba(192, 132, 252, 0.35);
+  box-shadow: 0 4px 14px -2px rgba(88, 28, 135, 0.25);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-theme-primary:hover {
+  background: linear-gradient(to right, #6B21A8, #A855F7, #4F46E5);
+  box-shadow: 0 6px 18px -2px rgba(88, 28, 135, 0.35);
+  border-color: rgba(216, 180, 254, 0.5);
+}
+
+.btn-theme-outline {
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+}
+.btn-theme-outline:hover {
+  background-color: var(--bg-subtle);
+  border-color: var(--accent-gold);
+}
+
+.card-luxury {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-card);
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-luxury:hover {
+  background-color: var(--bg-card-hover);
+  border-color: var(--border-primary);
+}
+
+.gold-gradient-text {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.luxury-card-glow {
+  box-shadow: 0 20px 40px -15px var(--accent-gold-glow), 0 0 1px 1px var(--border-primary);
+}
+
+.luxury-card-glow-subtle {
+  box-shadow: 0 12px 32px -10px rgba(88, 28, 135, 0.06), 0 0 0 1px var(--border-primary);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent-gold-glow);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-gold);
+}
