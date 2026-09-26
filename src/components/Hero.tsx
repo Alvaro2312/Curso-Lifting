@@ -4,6 +4,7 @@ import { COURSE_INFO } from '../data/courseData';
 import { getImage } from '../utils/imageStorage';
 
 const CANDIDATE_HERO_IMAGES = [
+  '/images/hero-active.jpg',
   '/images/Diseño sin título (83).png',
   '/Diseño sin título (83).png',
   '/images/Diseño%20sin%20t%C3%ADtulo%20(83).png',
@@ -19,15 +20,27 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ onOpenReservation }) => {
   const [imageIdx, setImageIdx] = useState(0);
   const [customImage, setCustomImage] = useState<string | null>(null);
+  const [serverImage, setServerImage] = useState<string | null>(null);
 
   useEffect(() => {
-    // Load persisted image from IndexedDB / Storage if previously set
+    // Load persisted image from IndexedDB / Storage if previously set (e.g. on desktop)
     let isMounted = true;
     getImage('hero').then((saved) => {
       if (isMounted && saved) {
         setCustomImage(saved);
       }
     });
+
+    // Also check server for synced image (used on mobile and other devices)
+    fetch('/api/sync-status')
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted && data.hero) {
+          setServerImage(data.hero);
+        }
+      })
+      .catch(() => {});
+
     return () => {
       isMounted = false;
     };
@@ -40,7 +53,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenReservation }) => {
     window.open(`https://wa.me/${COURSE_INFO.whatsappNumber}?text=${message}`, '_blank');
   };
 
-  const currentImageSrc = customImage || CANDIDATE_HERO_IMAGES[imageIdx] || CANDIDATE_HERO_IMAGES[CANDIDATE_HERO_IMAGES.length - 1];
+  const currentImageSrc = customImage || serverImage || CANDIDATE_HERO_IMAGES[imageIdx] || CANDIDATE_HERO_IMAGES[CANDIDATE_HERO_IMAGES.length - 1];
 
   return (
     <section className="relative overflow-hidden pt-8 pb-16 lg:pt-14 lg:pb-24 bg-gradient-to-b from-[var(--bg-primary)] via-[var(--bg-secondary)] to-[var(--bg-primary)] transition-colors duration-300">

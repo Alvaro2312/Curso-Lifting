@@ -53,17 +53,17 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <a href="#" className="flex items-center gap-3 group shrink-0">
+            <a href="#" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
               <div 
-                className="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-sm border border-[#BA5E76]/25 group-hover:scale-105 transition-transform p-1.5 overflow-hidden"
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white flex items-center justify-center shadow-sm border border-[#BA5E76]/25 group-hover:scale-105 transition-transform p-1.5 overflow-hidden shrink-0"
               >
                 <WarmiLogo className="w-full h-full" />
               </div>
-              <div className="flex flex-col justify-center leading-none">
-                <span className="font-serif-luxury text-xl sm:text-2xl font-bold tracking-[0.06em] text-[var(--text-primary)] uppercase">
+              <div className="flex flex-row sm:flex-col items-baseline sm:items-start justify-center gap-1.5 sm:gap-0 leading-none">
+                <span className="font-serif-luxury text-lg sm:text-2xl font-bold tracking-[0.05em] text-[var(--text-primary)] uppercase leading-none">
                   WARMI
                 </span>
-                <span className="text-[10px] sm:text-[11px] font-semibold tracking-[0.28em] text-[var(--accent-gold)] uppercase mt-1">
+                <span className="text-[11px] sm:text-[10px] lg:text-[11px] font-semibold tracking-[0.08em] sm:tracking-[0.2em] text-[var(--accent-gold)] uppercase sm:-mt-0.5 leading-none">
                   ACADEMY
                 </span>
               </div>

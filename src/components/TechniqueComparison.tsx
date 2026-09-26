@@ -11,6 +11,10 @@ interface TechniqueComparisonProps {
 export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
   const [customTradImage, setCustomTradImage] = useState<string | null>(null);
   const [customCoreanoImage, setCustomCoreanoImage] = useState<string | null>(null);
+  const [serverTradImg, setServerTradImg] = useState<string | null>(null);
+  const [serverCoreanoImg, setServerCoreanoImg] = useState<string | null>(null);
+  const [tradError, setTradError] = useState(false);
+  const [coreanoError, setCoreanoError] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -20,13 +24,32 @@ export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
     getImage('coreano').then((saved) => {
       if (isMounted && saved) setCustomCoreanoImage(saved);
     });
+
+    // Check server for synced images (used on mobile and other devices)
+    fetch('/api/sync-status')
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted) {
+          if (data.trad) setServerTradImg(data.trad);
+          if (data.coreano) setServerCoreanoImg(data.coreano);
+        }
+      })
+      .catch(() => {});
+
     return () => {
       isMounted = false;
     };
   }, []);
 
-  const tradImageSrc = customTradImage || liftingTradicionalImg;
-  const coreanoImageSrc = customCoreanoImage || liftingCoreanoImg;
+  const tradImageSrc = 
+    customTradImage || 
+    serverTradImg || 
+    (!tradError ? '/images/trad-active.jpg' : liftingTradicionalImg);
+
+  const coreanoImageSrc = 
+    customCoreanoImage || 
+    serverCoreanoImg || 
+    (!coreanoError ? '/images/coreano-active.jpg' : liftingCoreanoImg);
 
   return (
     <section 
@@ -87,6 +110,7 @@ export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
                 <img
                   src={tradImageSrc}
                   alt="Resultado real de técnica tradicional de lifting de pestañas"
+                  onError={() => setTradError(true)}
                   className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
@@ -169,6 +193,7 @@ export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
                 <img
                   src={coreanoImageSrc}
                   alt="Resultado real de técnica coreana de lifting de pestañas con acabado glossy"
+                  onError={() => setCoreanoError(true)}
                   className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none" />

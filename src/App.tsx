@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { KeyBenefits } from './components/KeyBenefits';
@@ -14,9 +14,24 @@ import { FaqSection } from './components/FaqSection';
 import { Footer } from './components/Footer';
 import { ReservationModal } from './components/ReservationModal';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { syncStoredImagesToServer } from './utils/imageSync';
 
 export default function App() {
   const [reservationModalOpen, setReservationModalOpen] = useState(false);
+  const [syncNotification, setSyncNotification] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Automatically sync browser images to server so mobile visitors see the updated photos
+    syncStoredImagesToServer();
+
+    const handleSynced = () => {
+      setSyncNotification('✓ Fotos sincronizadas con el servidor: ya se visualizan en celulares y versión pública.');
+      setTimeout(() => setSyncNotification(null), 6000);
+    };
+
+    window.addEventListener('photos-synced', handleSynced);
+    return () => window.removeEventListener('photos-synced', handleSynced);
+  }, []);
 
   const handleOpenReservation = () => {
     setReservationModalOpen(true);
@@ -29,8 +44,18 @@ export default function App() {
   return (
     <div 
       data-theme="blanco-morado-palorosa"
-      className="min-h-screen flex flex-col bg-theme-main text-theme-primary selection:bg-[var(--accent-gold)] selection:text-[var(--bg-primary)] transition-colors duration-300"
+      className="min-h-screen flex flex-col bg-theme-main text-theme-primary selection:bg-[var(--accent-gold)] selection:text-[var(--bg-primary)] transition-colors duration-300 relative"
     >
+      {/* Synchronization success toast */}
+      {syncNotification && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 max-w-lg w-[92%] pointer-events-none animate-in fade-in duration-300">
+          <div className="bg-black/90 text-white border border-[var(--accent-gold)] px-4 py-2.5 rounded-full shadow-2xl backdrop-blur-md flex items-center justify-center gap-2 text-xs font-medium text-center">
+            <span className="text-[var(--accent-gold)] font-bold text-sm">✓</span>
+            <span>{syncNotification}</span>
+          </div>
+        </div>
+      )}
+
       {/* Top sticky Navigation */}
       <Navbar 
         onOpenReservation={handleOpenReservation}
