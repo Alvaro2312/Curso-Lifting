@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GraduationCap, MessageCircle, ArrowRight, Camera, Upload } from 'lucide-react';
+import { GraduationCap, MessageCircle, ArrowRight, Camera, Upload, CheckCircle2, RotateCcw } from 'lucide-react';
 import { COURSE_INFO } from '../data/courseData';
+import { optimizeImage, saveImage, getImage, removeImage } from '../utils/imageStorage';
 
 const CANDIDATE_HERO_IMAGES = [
   '/images/Diseño sin título (83).png',
@@ -19,17 +20,20 @@ export const Hero: React.FC<HeroProps> = ({ onOpenReservation }) => {
   const [imageIdx, setImageIdx] = useState(0);
   const [customImage, setCustomImage] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem('warmi_hero_image');
-      if (saved) {
+    // Load persisted image from IndexedDB / Storage
+    let isMounted = true;
+    getImage('hero').then((saved) => {
+      if (isMounted && saved) {
         setCustomImage(saved);
       }
-    } catch {
-      // localStorage may fail in private mode
-    }
+    });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleWhatsApp = () => {
@@ -39,21 +43,28 @@ export const Hero: React.FC<HeroProps> = ({ onOpenReservation }) => {
     window.open(`https://wa.me/${COURSE_INFO.whatsappNumber}?text=${message}`, '_blank');
   };
 
-  const handleFile = (file: File) => {
+  const handleFile = async (file: File) => {
     if (!file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const result = e.target?.result as string;
-      if (result) {
-        setCustomImage(result);
-        try {
-          localStorage.setItem('warmi_hero_image', result);
-        } catch {
-          // Ignore storage quota error
-        }
-      }
-    };
-    reader.readAsDataURL(file);
+    try {
+      setSaveStatus('Optimizando y guardando...');
+      const optimized = await optimizeImage(file);
+      setCustomImage(optimized);
+      await saveImage('hero', optimized);
+      setSaveStatus('✓ Foto guardada permanentemente');
+      setTimeout(() => setSaveStatus(null), 3500);
+    } catch (err) {
+      console.error('Error procesando imagen:', err);
+      setSaveStatus('Error al guardar imagen');
+      setTimeout(() => setSaveStatus(null), 3000);
+    }
+  };
+
+  const handleResetImage = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    await removeImage('hero');
+    setCustomImage(null);
+    setSaveStatus('Restablecida foto original');
+    setTimeout(() => setSaveStatus(null), 3000);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -175,6 +186,14 @@ export const Hero: React.FC<HeroProps> = ({ onOpenReservation }) => {
                   </div>
                 )}
 
+                {/* Save status notification */}
+                {saveStatus && (
+                  <div className="absolute top-4 left-4 right-4 bg-black/85 backdrop-blur-md border border-[var(--accent-gold)] text-white px-3 py-2 rounded-xl text-xs font-medium flex items-center justify-center gap-2 shadow-xl z-20 transition-all animate-in fade-in">
+                    <CheckCircle2 className="w-4 h-4 text-[var(--accent-gold)] shrink-0" />
+                    <span>{saveStatus}</span>
+                  </div>
+                )}
+
                 {/* Subtle Action to upload or replace image */}
                 <input
                   ref={fileInputRef}
@@ -187,15 +206,29 @@ export const Hero: React.FC<HeroProps> = ({ onOpenReservation }) => {
                     }
                   }}
                 />
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  title="Cambiar foto de la cabecera"
-                  className="absolute bottom-3 right-3 opacity-80 group-hover:opacity-100 transition-opacity bg-black/65 hover:bg-black/85 backdrop-blur-md border border-white/20 text-white rounded-full p-2.5 sm:px-3 sm:py-2 text-xs font-medium flex items-center gap-2 cursor-pointer shadow-lg z-10"
-                >
-                  <Camera className="w-4 h-4 text-[var(--accent-gold)]" />
-                  <span className="hidden sm:inline">Cambiar foto</span>
-                </button>
+                
+                <div className="absolute bottom-3 right-3 flex items-center gap-2 z-10">
+                  {customImage && (
+                    <button
+                      type="button"
+                      onClick={handleResetImage}
+                      title="Restablecer imagen predeterminada"
+                      className="opacity-80 hover:opacity-100 transition-opacity bg-black/70 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white/90 rounded-full p-2.5 sm:px-3 sm:py-2 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-lg"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Restablecer</span>
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    title="Cambiar foto de la cabecera"
+                    className="opacity-85 hover:opacity-100 transition-opacity bg-black/75 hover:bg-black/90 backdrop-blur-md border border-[var(--accent-gold)]/60 text-white rounded-full p-2.5 sm:px-3 sm:py-2 text-xs font-medium flex items-center gap-2 cursor-pointer shadow-lg"
+                  >
+                    <Camera className="w-4 h-4 text-[var(--accent-gold)]" />
+                    <span className="hidden sm:inline">Cambiar foto</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

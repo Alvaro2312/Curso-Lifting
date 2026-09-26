@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Check, Layers, Camera, Upload } from 'lucide-react';
+import { Check, Layers, Camera, Upload, CheckCircle2, RotateCcw } from 'lucide-react';
 import liftingTradicionalImg from '../assets/lifting-tradicional.png';
 import liftingCoreanoImg from '../assets/lifting-coreano.jpg';
+import { optimizeImage, saveImage, getImage, removeImage } from '../utils/imageStorage';
 
 interface TechniqueComparisonProps {
   onOpenReservation?: () => void;
@@ -12,45 +13,68 @@ export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
   const [customCoreanoImage, setCustomCoreanoImage] = useState<string | null>(null);
   const [isDraggingTrad, setIsDraggingTrad] = useState(false);
   const [isDraggingCoreano, setIsDraggingCoreano] = useState(false);
+  const [statusTrad, setStatusTrad] = useState<string | null>(null);
+  const [statusCoreano, setStatusCoreano] = useState<string | null>(null);
 
   const tradInputRef = useRef<HTMLInputElement>(null);
   const coreanoInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    try {
-      const savedTrad = localStorage.getItem('warmi_trad_image');
-      if (savedTrad) setCustomTradImage(savedTrad);
-      const savedCoreano = localStorage.getItem('warmi_coreano_image');
-      if (savedCoreano) setCustomCoreanoImage(savedCoreano);
-    } catch {
-      // localStorage may fail in some environments
-    }
+    let isMounted = true;
+    getImage('trad').then((saved) => {
+      if (isMounted && saved) setCustomTradImage(saved);
+    });
+    getImage('coreano').then((saved) => {
+      if (isMounted && saved) setCustomCoreanoImage(saved);
+    });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  const handleFile = (file: File, type: 'trad' | 'coreano') => {
+  const handleFile = async (file: File, type: 'trad' | 'coreano') => {
     if (!file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const result = e.target?.result as string;
-      if (result) {
-        if (type === 'trad') {
-          setCustomTradImage(result);
-          try {
-            localStorage.setItem('warmi_trad_image', result);
-          } catch {
-            // Ignore storage quota error
-          }
-        } else {
-          setCustomCoreanoImage(result);
-          try {
-            localStorage.setItem('warmi_coreano_image', result);
-          } catch {
-            // Ignore storage quota error
-          }
-        }
+    try {
+      if (type === 'trad') setStatusTrad('Guardando...');
+      else setStatusCoreano('Guardando...');
+
+      const optimized = await optimizeImage(file);
+      if (type === 'trad') {
+        setCustomTradImage(optimized);
+        await saveImage('trad', optimized);
+        setStatusTrad('✓ Guardada permanentemente');
+        setTimeout(() => setStatusTrad(null), 3500);
+      } else {
+        setCustomCoreanoImage(optimized);
+        await saveImage('coreano', optimized);
+        setStatusCoreano('✓ Guardada permanentemente');
+        setTimeout(() => setStatusCoreano(null), 3500);
       }
-    };
-    reader.readAsDataURL(file);
+    } catch (err) {
+      console.error('Error guardando imagen:', err);
+      if (type === 'trad') {
+        setStatusTrad('Error al guardar');
+        setTimeout(() => setStatusTrad(null), 3000);
+      } else {
+        setStatusCoreano('Error al guardar');
+        setTimeout(() => setStatusCoreano(null), 3000);
+      }
+    }
+  };
+
+  const handleReset = async (type: 'trad' | 'coreano', e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (type === 'trad') {
+      await removeImage('trad');
+      setCustomTradImage(null);
+      setStatusTrad('Restablecida');
+      setTimeout(() => setStatusTrad(null), 2500);
+    } else {
+      await removeImage('coreano');
+      setCustomCoreanoImage(null);
+      setStatusCoreano('Restablecida');
+      setTimeout(() => setStatusCoreano(null), 2500);
+    }
   };
 
   const handleDrop = (e: React.DragEvent, type: 'trad' | 'coreano') => {
@@ -148,6 +172,14 @@ export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
                   </div>
                 )}
 
+                {/* Status toast */}
+                {statusTrad && (
+                  <div className="absolute top-3 left-3 bg-black/85 backdrop-blur-md border border-[var(--accent-gold)] text-white px-2.5 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 shadow-lg z-20">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[var(--accent-gold)] shrink-0" />
+                    <span>{statusTrad}</span>
+                  </div>
+                )}
+
                 {/* Input and button to change photo */}
                 <input
                   ref={tradInputRef}
@@ -160,15 +192,27 @@ export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
                     }
                   }}
                 />
-                <button
-                  type="button"
-                  onClick={() => tradInputRef.current?.click()}
-                  title="Cambiar foto de técnica tradicional"
-                  className="absolute top-3 right-3 opacity-80 group-hover:opacity-100 transition-opacity bg-black/65 hover:bg-black/85 backdrop-blur-md border border-white/20 text-white rounded-full px-2.5 py-1.5 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-lg z-10"
-                >
-                  <Camera className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
-                  <span className="text-[11px]">Cambiar foto</span>
-                </button>
+                <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10">
+                  {customTradImage && (
+                    <button
+                      type="button"
+                      onClick={(e) => handleReset('trad', e)}
+                      title="Restablecer imagen original"
+                      className="opacity-80 hover:opacity-100 transition-opacity bg-black/70 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white rounded-full p-1.5 text-xs font-medium flex items-center justify-center cursor-pointer shadow-lg"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => tradInputRef.current?.click()}
+                    title="Cambiar foto de técnica tradicional"
+                    className="opacity-85 hover:opacity-100 transition-opacity bg-black/70 hover:bg-black/90 backdrop-blur-md border border-[var(--accent-gold)]/60 text-white rounded-full px-2.5 py-1.5 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-lg"
+                  >
+                    <Camera className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
+                    <span className="text-[11px]">Cambiar foto</span>
+                  </button>
+                </div>
               </div>
 
               {/* Checklist */}
@@ -275,6 +319,14 @@ export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
                   </div>
                 )}
 
+                {/* Status toast */}
+                {statusCoreano && (
+                  <div className="absolute top-3 left-3 bg-black/85 backdrop-blur-md border border-[var(--accent-gold)] text-white px-2.5 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 shadow-lg z-20">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[var(--accent-gold)] shrink-0" />
+                    <span>{statusCoreano}</span>
+                  </div>
+                )}
+
                 {/* Input and button to change photo */}
                 <input
                   ref={coreanoInputRef}
@@ -287,15 +339,27 @@ export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
                     }
                   }}
                 />
-                <button
-                  type="button"
-                  onClick={() => coreanoInputRef.current?.click()}
-                  title="Cambiar foto de técnica coreana"
-                  className="absolute top-3 right-3 opacity-80 group-hover:opacity-100 transition-opacity bg-black/65 hover:bg-black/85 backdrop-blur-md border border-white/20 text-white rounded-full px-2.5 py-1.5 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-lg z-10"
-                >
-                  <Camera className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
-                  <span className="text-[11px]">Cambiar foto</span>
-                </button>
+                <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10">
+                  {customCoreanoImage && (
+                    <button
+                      type="button"
+                      onClick={(e) => handleReset('coreano', e)}
+                      title="Restablecer imagen original"
+                      className="opacity-80 hover:opacity-100 transition-opacity bg-black/70 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white rounded-full p-1.5 text-xs font-medium flex items-center justify-center cursor-pointer shadow-lg"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => coreanoInputRef.current?.click()}
+                    title="Cambiar foto de técnica coreana"
+                    className="opacity-85 hover:opacity-100 transition-opacity bg-black/70 hover:bg-black/90 backdrop-blur-md border border-[var(--accent-gold)]/60 text-white rounded-full px-2.5 py-1.5 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-lg"
+                  >
+                    <Camera className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
+                    <span className="text-[11px]">Cambiar foto</span>
+                  </button>
+                </div>
               </div>
 
               {/* Checklist */}
