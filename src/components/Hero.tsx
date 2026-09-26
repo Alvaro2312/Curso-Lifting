@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { GraduationCap, MessageCircle, ArrowRight, Camera, Upload, CheckCircle2, RotateCcw } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { GraduationCap, MessageCircle, ArrowRight } from 'lucide-react';
 import { COURSE_INFO } from '../data/courseData';
-import { optimizeImage, saveImage, getImage, removeImage } from '../utils/imageStorage';
+import { getImage } from '../utils/imageStorage';
 
 const CANDIDATE_HERO_IMAGES = [
   '/images/Diseño sin título (83).png',
@@ -19,12 +19,9 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ onOpenReservation }) => {
   const [imageIdx, setImageIdx] = useState(0);
   const [customImage, setCustomImage] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [saveStatus, setSaveStatus] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Load persisted image from IndexedDB / Storage
+    // Load persisted image from IndexedDB / Storage if previously set
     let isMounted = true;
     getImage('hero').then((saved) => {
       if (isMounted && saved) {
@@ -41,47 +38,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenReservation }) => {
       "¡Hola Tiare y Álvaro! Me interesa el Curso de Lifting de Pestañas de Cero a Pro (Tradicional, Coreano y Redes). Quiero saber sobre los cupos disponibles."
     );
     window.open(`https://wa.me/${COURSE_INFO.whatsappNumber}?text=${message}`, '_blank');
-  };
-
-  const handleFile = async (file: File) => {
-    if (!file.type.startsWith('image/')) return;
-    try {
-      setSaveStatus('Optimizando y guardando...');
-      const optimized = await optimizeImage(file);
-      setCustomImage(optimized);
-      await saveImage('hero', optimized);
-      setSaveStatus('✓ Foto guardada permanentemente');
-      setTimeout(() => setSaveStatus(null), 3500);
-    } catch (err) {
-      console.error('Error procesando imagen:', err);
-      setSaveStatus('Error al guardar imagen');
-      setTimeout(() => setSaveStatus(null), 3000);
-    }
-  };
-
-  const handleResetImage = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    await removeImage('hero');
-    setCustomImage(null);
-    setSaveStatus('Restablecida foto original');
-    setTimeout(() => setSaveStatus(null), 3000);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFile(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = () => {
-    setIsDragging(false);
   };
 
   const currentImageSrc = customImage || CANDIDATE_HERO_IMAGES[imageIdx] || CANDIDATE_HERO_IMAGES[CANDIDATE_HERO_IMAGES.length - 1];
@@ -155,16 +111,11 @@ export const Hero: React.FC<HeroProps> = ({ onOpenReservation }) => {
             <div className="relative mx-auto max-w-md lg:max-w-none">
               {/* Main Image Card */}
               <div 
-                className={`relative rounded-3xl overflow-hidden shadow-2xl border transition-all duration-300 group ${
-                  isDragging ? 'ring-4 ring-[var(--accent-gold)] scale-[1.02]' : ''
-                }`}
+                className="relative rounded-3xl overflow-hidden shadow-2xl border transition-all duration-300 group"
                 style={{
                   borderColor: 'var(--border-primary)',
                   backgroundColor: 'var(--bg-card)',
                 }}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
               >
                 <img
                   src={currentImageSrc}
@@ -177,58 +128,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenReservation }) => {
                   className="w-full h-[460px] object-cover object-center transform hover:scale-105 transition-transform duration-700"
                   referrerPolicy="no-referrer"
                 />
-
-                {/* Drag & drop overlay indicator */}
-                {isDragging && (
-                  <div className="absolute inset-0 bg-black/70 backdrop-blur-xs flex flex-col items-center justify-center gap-3 text-white z-20 pointer-events-none">
-                    <Upload className="w-10 h-10 text-[var(--accent-gold)] animate-bounce" />
-                    <p className="font-semibold text-sm">Suelta aquí tu imagen para aplicarla</p>
-                  </div>
-                )}
-
-                {/* Save status notification */}
-                {saveStatus && (
-                  <div className="absolute top-4 left-4 right-4 bg-black/85 backdrop-blur-md border border-[var(--accent-gold)] text-white px-3 py-2 rounded-xl text-xs font-medium flex items-center justify-center gap-2 shadow-xl z-20 transition-all animate-in fade-in">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--accent-gold)] shrink-0" />
-                    <span>{saveStatus}</span>
-                  </div>
-                )}
-
-                {/* Subtle Action to upload or replace image */}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      handleFile(e.target.files[0]);
-                    }
-                  }}
-                />
-                
-                <div className="absolute bottom-3 right-3 flex items-center gap-2 z-10">
-                  {customImage && (
-                    <button
-                      type="button"
-                      onClick={handleResetImage}
-                      title="Restablecer imagen predeterminada"
-                      className="opacity-80 hover:opacity-100 transition-opacity bg-black/70 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white/90 rounded-full p-2.5 sm:px-3 sm:py-2 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-lg"
-                    >
-                      <RotateCcw className="w-3.5 h-3.5" />
-                      <span className="hidden sm:inline">Restablecer</span>
-                    </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    title="Cambiar foto de la cabecera"
-                    className="opacity-85 hover:opacity-100 transition-opacity bg-black/75 hover:bg-black/90 backdrop-blur-md border border-[var(--accent-gold)]/60 text-white rounded-full p-2.5 sm:px-3 sm:py-2 text-xs font-medium flex items-center gap-2 cursor-pointer shadow-lg"
-                  >
-                    <Camera className="w-4 h-4 text-[var(--accent-gold)]" />
-                    <span className="hidden sm:inline">Cambiar foto</span>
-                  </button>
-                </div>
               </div>
             </div>
           </div>
