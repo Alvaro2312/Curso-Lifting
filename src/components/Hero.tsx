@@ -78,7 +78,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenReservation }) => {
             {/* Badge */}
             <div className="badge-theme inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide shadow-xs">
               <GraduationCap className="hidden sm:inline-block w-3.5 h-3.5 text-[var(--accent-gold)]" />
-              <span className="uppercase tracking-wider text-[11px]">Certificación Doble Técnica & Negocio Digital • 14 y 15 de Noviembre</span>
+              <span className="uppercase tracking-wider text-[11px]">Certificación Doble Técnica & Negocio Digital</span>
             </div>
 
             {/* Main Headline */}
