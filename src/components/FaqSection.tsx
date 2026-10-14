@@ -125,14 +125,15 @@ export const FaqSection: React.FC = () => {
               Escríbenos directamente y te responderemos a la brevedad.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={handleWhatsAppInquiry}
+          <a
+            href="https://wa.me/56932590418?text=%C2%A1Hola!%20Tengo%20una%20duda%20espec%C3%ADfica%20sobre%20el%20Curso%20de%20Lifting%20de%20Pesta%C3%B1as%20(Tradicional%20y%20Coreano)."
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 px-5 sm:px-7 py-3 sm:py-3.5 text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-[#1ebe5d] via-[#25D366] to-[#128c7e] hover:from-[#19a751] hover:via-[#22be5b] hover:to-[#0f776a] rounded-full shadow-lg shadow-[#25D366]/30 hover:shadow-xl hover:shadow-[#25D366]/40 hover:scale-[1.02] border border-emerald-300/30 transition-all cursor-pointer shrink-0 whitespace-nowrap"
           >
             <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 fill-white text-white shrink-0" />
             <span className="whitespace-nowrap">Consultar por WhatsApp</span>
-          </button>
+          </a>
         </div>
       </div>
     </section>

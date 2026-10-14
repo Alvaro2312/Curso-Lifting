@@ -9,7 +9,7 @@ import {
   ChevronDown, 
   CheckCircle,
   BookOpen,
-  Download
+  Calendar
 } from 'lucide-react';
 import { MODULES_DATA } from '../data/courseData';
 
@@ -164,19 +164,20 @@ export const Curriculum: React.FC<CurriculumProps> = ({ onOpenReservation }) => 
           })}
         </div>
 
-        {/* Bottom CTA within Curriculum */}
-        <div className="mt-12 text-center">
-          <p className="text-sm text-[var(--text-muted)] mb-4">
-            ¿Quieres ver el dossier y temario descargable en PDF?
+        {/* Date and CTA */}
+        <div className="mt-12 text-center flex flex-col items-center justify-center space-y-4">
+          <p className="text-base sm:text-lg font-semibold text-[var(--text-primary)]">
+            El curso se realizará el 14 y 15 de Noviembre
           </p>
-          <button
-            type="button"
-            onClick={onOpenReservation}
-            className="btn-theme-primary inline-flex items-center gap-2 px-7 py-3 text-xs uppercase tracking-wider font-bold rounded-full transition-all cursor-pointer"
+          <a
+            href="https://wa.me/56932590418?text=%C2%A1Hola!%20Quiero%20reservar%20mi%20cupo%20para%20el%20Curso%20de%20Lifting%20de%20Pesta%C3%B1as%20del%2014%20y%2015%20de%20Noviembre.%20%C2%BFMe%20podr%C3%ADan%20indicar%20los%20datos%20para%20transferir%20el%2050%25%3F"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-theme-primary inline-flex items-center gap-2 px-8 py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider rounded-full shadow-lg transition-all cursor-pointer"
           >
-            <Download className="w-4 h-4" />
-            <span>Descargar Documento</span>
-          </button>
+            <Calendar className="w-4 h-4" />
+            <span>Reservar Cupo</span>
+          </a>
         </div>
       </div>
     </section>

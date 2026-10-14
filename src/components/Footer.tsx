@@ -33,14 +33,14 @@ export const Footer: React.FC<FooterProps> = ({ onOpenReservation }) => {
                 <span className="font-serif-luxury text-2xl font-bold tracking-wider text-[var(--text-primary)] block">
                   WARMI ACADEMY
                 </span>
-                <span className="text-[10px] tracking-widest uppercase text-[var(--accent-gold)] block">
-                  Curso Lifting de Pestañas: De Cero a Pro
+                <span className="text-[10px] tracking-widest uppercase text-[var(--accent-gold)] block font-semibold">
+                  Curso Lifting de Pestañas • 14 y 15 de Noviembre
                 </span>
               </div>
             </div>
 
             <p className="hidden md:block text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed max-w-sm">
-              Formación profesional intensiva de fin de semana con Tiare Ávalos y Álvaro Petrillo. Aprende la química, anatomía y la técnica coreana más demandada, junto con la estrategia para llenar tu agenda.
+              Formación profesional intensiva realizada el <strong>14 y 15 de Noviembre</strong> con Tiare Ávalos y Álvaro Petrillo. Aprende la química, anatomía y la técnica coreana más demandada, junto con la estrategia para llenar tu agenda.
             </p>
           </div>
 
@@ -91,7 +91,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenReservation }) => {
                 </a>
               </li>
               <li>
-                <a href="#reserva" className="hover:text-[var(--accent-gold)] transition-colors">
+                <a 
+                  href="https://wa.me/56932590418?text=%C2%A1Hola!%20Quiero%20reservar%20mi%20cupo%20con%20el%2050%25%20de%20abono%20para%20el%20Curso%20de%20Lifting%20de%20Pesta%C3%B1as."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[var(--accent-gold)] transition-colors"
+                >
                   Reserva de Cupo ({COURSE_INFO.formattedPrice})
                 </a>
               </li>
@@ -105,23 +110,28 @@ export const Footer: React.FC<FooterProps> = ({ onOpenReservation }) => {
 
           {/* Quick Action & Contact */}
           <div className="lg:col-span-4 space-y-4">
-            <div className="hidden md:block space-y-2">
+            <div className="space-y-2">
               <h4 className="font-serif-luxury text-base font-bold text-[var(--text-primary)] uppercase tracking-wider">
-                Reserva de Cupo
+                Próxima Fecha & Reserva
               </h4>
+              <p className="text-xs text-[var(--accent-gold)] font-bold flex items-center gap-1.5">
+                <span>📅 Fecha del curso:</span>
+                <span className="text-[var(--text-primary)] font-semibold">14 y 15 de Noviembre</span>
+              </p>
               <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                 Valor del curso: <strong>{COURSE_INFO.formattedPrice} CLP</strong>. Congela tu cupo abonando el <strong>50% ({COURSE_INFO.reservationAmount})</strong> y cancela el saldo 1 día antes.
               </p>
             </div>
 
             <div className="flex justify-center sm:justify-start">
-              <button
-                type="button"
-                onClick={onOpenReservation}
-                className="btn-theme-primary px-7 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer text-center w-fit"
+              <a
+                href="https://wa.me/56932590418?text=%C2%A1Hola!%20Quiero%20reservar%20mi%20cupo%20con%20el%2050%25%20de%20abono%20para%20el%20Curso%20de%20Lifting%20de%20Pesta%C3%B1as."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-theme-primary px-7 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer text-center w-fit inline-block"
               >
                 Reservar con 50%
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -130,7 +140,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenReservation }) => {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
           <p>© {new Date().getFullYear()} Warmi Academy. Todos los derechos reservados.</p>
           <p className="flex items-center gap-1">
-            Impartido por Tiare Ávalos & Álvaro Petrillo
+            Impartido por Tiare Ávalos & Álvaro Petrillo • Edición 14 y 15 de Noviembre
           </p>
         </div>
       </div>

@@ -122,10 +122,10 @@ export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
               {/* Checklist */}
               <ul className="space-y-3 pt-2">
                 {[
-                  "Curvatura suave en 'C' uniforme a lo largo de toda la fibra",
-                  "Ideal para pestañas largas que solo requieren definición",
-                  "Uso de moldes de silicona estándares (S, M, L)",
-                  "Tiempos de exposición convencionales con neutralizado",
+                  "Realza la curvatura natural de la pestaña.",
+                  "Técnica estandarizada, con tiempos y procesos.",
+                  "Utiliza químicos tradicionales.",
+                  "Entrega elevación y curvatura.",
                   "Tarifa sugerida de cobro: $20.000 - $25.000 CLP",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-[var(--text-secondary)]">
@@ -212,10 +212,10 @@ export const TechniqueComparison: React.FC<TechniqueComparisonProps> = () => {
               {/* Checklist */}
               <ul className="space-y-3 pt-2">
                 {[
-                  "Máxima proyección y elevación directa desde la raíz sin quiebres",
-                  "Moldes anatómicos especiales con efecto lamination espejo",
-                  "Especial para pestañas cortas, rectas y párpados encapotados",
-                  "Nutrición profunda con queratina pura y ácido hialurónico sellado",
+                  "Elevación más marcada desde la raíz.",
+                  "Puede generar una apariencia de pestañas más largas y ordenadas.",
+                  "Utiliza químicos más amigables con las pestañas.",
+                  "Prioriza la hidratación de la fibra.",
                   "Tarifa sugerida de cobro: $30.000 - $45.000 CLP (¡mayor margen!)",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-[var(--text-primary)]">

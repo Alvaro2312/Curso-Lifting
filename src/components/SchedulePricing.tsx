@@ -132,7 +132,7 @@ export const SchedulePricing: React.FC<SchedulePricingProps> = ({ onOpenReservat
                     </div>
                     <div>
                       <h4 className="font-bold text-sm text-[var(--text-primary)]">
-                        Cupos Reducidos por Edición
+                        Cupos Reducidos por Edición ({COURSE_INFO.nextEditionDate})
                       </h4>
                       <p className="text-xs text-[var(--text-secondary)] mt-1 leading-relaxed">
                         Mantenemos grupos pequeños para brindar atención individualizada y corrección minuciosa de cada detalle práctico.
@@ -197,14 +197,15 @@ export const SchedulePricing: React.FC<SchedulePricingProps> = ({ onOpenReservat
 
                 {/* CTA Button */}
                 <div className="pt-4">
-                  <button
-                    type="button"
-                    onClick={onOpenReservation}
+                  <a
+                    href="https://wa.me/56932590418?text=%C2%A1Hola!%20Quiero%20asegurar%20mi%20cupo%20con%20el%2050%25%20de%20abono%20(%2460.000%20CLP)%20para%20el%20Curso%20de%20Lifting%20de%20Pesta%C3%B1as%20de%20Cero%20a%20Pro.%20%C2%BFMe%20podr%C3%ADan%20indicar%20los%20datos%20de%20transferencia%3F"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="btn-theme-primary w-full py-4 px-6 text-sm font-bold uppercase tracking-wider rounded-2xl transition-all cursor-pointer flex items-center justify-center gap-2 group text-center"
                   >
                     <span>QUIERO ASEGURAR MI CUPO CON EL 50% DE ABONO</span>
                     <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>

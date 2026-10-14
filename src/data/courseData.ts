@@ -9,10 +9,16 @@ export const COURSE_INFO = {
   formattedPrice: "$120.000",
   reservationPercent: 50,
   reservationAmount: "$60.000",
-  whatsappNumber: "56912345678", // standard international format
-  nextEditionDate: "Próximo Fin de Semana",
+  whatsappNumber: "56932590418", // +56932590418
+  nextEditionDate: "14 y 15 de Noviembre",
   availableSpots: 6,
   totalSpots: 10,
+};
+
+export const getWhatsAppUrl = (customText?: string) => {
+  const defaultText = "¡Hola! Quiero reservar mi cupo para el Curso de Lifting de Pestañas de Cero a Pro (Tradicional, Coreano y Redes). ¿Me podrían indicar los datos para transferir el 50% y asegurar mi lugar?";
+  const message = encodeURIComponent(customText || defaultText);
+  return `https://wa.me/56932590418?text=${message}`;
 };
 
 export const EXCLUSIVE_BENEFITS = [
@@ -259,7 +265,7 @@ export const TESTIMONIALS: TestimonialItem[] = [
     city: "Santiago",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop",
     rating: 5,
-    quote: "Tenía terror de quemar las pestañas de mis clientas porque en otro curso solo me dijeron 'déjalo 10 minutos'. Con Tiare entendí la química exacta y la técnica coreana es lo que más me piden. Además, la publicidad de Álvaro me trajo 14 clientas en mi primera semana.",
+    quote: "Tenía terror de quemar las pestañas de mis clientas porque en otro curso solo me dijeron 'déjalo 10 minutos'. Con Tiare entendí la química exacta y el paso a paso para hacer unas pestañas hermosas.",
     achievement: "Recuperó su inversión en solo 4 días",
     beforeAfterImage: {
       before: "https://images.unsplash.com/photo-1583001809873-a128495da465?q=80&w=600&auto=format&fit=crop",
@@ -274,7 +280,7 @@ export const TESTIMONIALS: TestimonialItem[] = [
     city: "Viña del Mar",
     avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop",
     rating: 5,
-    quote: "La asesoría ilimitada es real. Tuve una clienta con párpado muy encapotado y pestañas cortitas, le escribí a Tiare por WhatsApp y me guió con el molde ideal. El resultado fue perfecto y la clienta volvió al mes siguiente.",
+    quote: "La asesoría ilimitada es real. Tuve una clienta con pestañas cortitas, le escribí a Tiare por WhatsApp y me guió con el molde ideal. El resultado fue perfecto y la clienta volvió al mes siguiente.",
     achievement: "Factura más de $650.000 mensuales solo en lifting",
     beforeAfterImage: {
       before: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=600&auto=format&fit=crop",
@@ -289,7 +295,7 @@ export const TESTIMONIALS: TestimonialItem[] = [
     city: "Concepción",
     avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=400&auto=format&fit=crop",
     rating: 5,
-    quote: "Partí desde cero absoluto sin saber nada de pestañas. La clase de Meta Ads con Álvaro fue una revelación: aprendí a invertir $3.000 diarios en Instagram y hoy tengo lista de espera para los fines de semana. 100% recomendado.",
+    quote: "Partí desde cero absoluto sin saber nada de pestañas y este curso me cambió la vida. Aprendí la técnica con total seguridad y hoy manejo mis propios tiempos siendo mi propia jefa, con clientas felices. 100% recomendado.",
     achievement: "Agenda completa para los próximos 2 meses",
     beforeAfterImage: {
       before: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=600&auto=format&fit=crop",
@@ -300,6 +306,12 @@ export const TESTIMONIALS: TestimonialItem[] = [
 ];
 
 export const FAQS: FaqItem[] = [
+  {
+    id: "faq-fecha",
+    category: "general",
+    question: "¿En qué fechas se realizará el curso?",
+    answer: "El curso se realizará el 14 y 15 de Noviembre.",
+  },
   {
     id: "faq-1",
     category: "general",

@@ -33,8 +33,13 @@ export default function App() {
     return () => window.removeEventListener('photos-synced', handleSynced);
   }, []);
 
-  const handleOpenReservation = () => {
-    setReservationModalOpen(true);
+  const handleOpenReservation = (customMessage?: string) => {
+    const text = encodeURIComponent(
+      typeof customMessage === 'string' && customMessage
+        ? customMessage
+        : "¡Hola! Quiero reservar mi cupo para el Curso de Lifting de Pestañas de Cero a Pro (Tradicional, Coreano y Redes). ¿Me podrían indicar los datos para transferir el 50% y asegurar mi lugar?"
+    );
+    window.open(`https://wa.me/56932590418?text=${text}`, '_blank');
   };
 
   const handleCloseReservation = () => {

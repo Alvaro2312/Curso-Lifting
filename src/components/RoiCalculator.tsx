@@ -175,14 +175,15 @@ export const RoiCalculator: React.FC<RoiCalculatorProps> = ({ onOpenReservation 
               </div>
 
               {/* CTA button */}
-              <button
-                type="button"
-                onClick={onOpenReservation}
+              <a
+                href="https://wa.me/56932590418?text=%C2%A1Hola!%20Revis%C3%A9%20la%20calculadora%20de%20ingresos%20y%20quiero%20reservar%20mi%20cupo%20para%20el%20Curso%20de%20Lifting%20de%20Pesta%C3%B1as%20de%20Cero%20a%20Pro."
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn-theme-primary w-full py-3.5 px-4 text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2"
               >
                 <span>Empezar a Generar Ingresos</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </a>
             </div>
           </div>
         </div>

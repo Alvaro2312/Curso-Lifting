@@ -126,14 +126,15 @@ export const CourseAudience: React.FC<CourseAudienceProps> = ({ onOpenReservatio
           <p className="text-sm text-[var(--text-secondary)]">
             ¿Cumples con el perfil y estás lista para dar el salto profesional?
           </p>
-          <button
-            type="button"
-            onClick={onOpenReservation}
+          <a
+            href="https://wa.me/56932590418?text=%C2%A1Hola!%20Cumplo%20con%20el%20perfil%20y%20quiero%20asegurar%20mi%20cupo%20ahora%20para%20el%20Curso%20de%20Lifting%20de%20Pesta%C3%B1as%20de%20Cero%20a%20Pro."
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-theme-primary px-7 py-3 text-xs uppercase tracking-wider font-bold rounded-full transition-all cursor-pointer inline-flex items-center gap-2 group"
           >
             <span>Asegurar Mi Cupo Ahora</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
+          </a>
         </div>
       </div>
     </section>
