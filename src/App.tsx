@@ -15,12 +15,16 @@ import { Footer } from './components/Footer';
 import { ReservationModal } from './components/ReservationModal';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { syncStoredImagesToServer } from './utils/imageSync';
+import { initGlobalWhatsAppTracking, trackWhatsAppConversion } from './utils/metaTracking';
 
 export default function App() {
   const [reservationModalOpen, setReservationModalOpen] = useState(false);
   const [syncNotification, setSyncNotification] = useState<string | null>(null);
 
   useEffect(() => {
+    // Automatically track any clicks on WhatsApp links and send to Meta CAPI & Pixel
+    initGlobalWhatsAppTracking();
+
     // Automatically sync browser images to server so mobile visitors see the updated photos
     syncStoredImagesToServer();
 
@@ -34,6 +38,9 @@ export default function App() {
   }, []);
 
   const handleOpenReservation = (customMessage?: string) => {
+    // Track conversion event for Meta CAPI and Pixel
+    trackWhatsAppConversion('Lead', { source: 'cta_button' });
+
     const text = encodeURIComponent(
       typeof customMessage === 'string' && customMessage
         ? customMessage
