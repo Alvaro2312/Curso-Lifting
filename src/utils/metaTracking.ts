@@ -16,6 +16,16 @@ export function trackWhatsAppConversion(customEventName = 'Lead', customData: Re
     const fbp = getCookie('_fbp');
     const fbc = getCookie('_fbc');
 
+    // Extract test_event_code from URL parameters or default to current test code
+    let testEventCode = 'TEST17356';
+    if (typeof window !== 'undefined' && window.location.search) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const codeFromUrl = urlParams.get('test_event_code');
+      if (codeFromUrl) {
+        testEventCode = codeFromUrl;
+      }
+    }
+
     // 1. Client-side GTM DataLayer push with deduplication event_id
     if (typeof window !== 'undefined') {
       const win = window as any;
@@ -46,7 +56,8 @@ export function trackWhatsAppConversion(customEventName = 'Lead', customData: Re
       eventSourceUrl,
       fbp,
       fbc,
-      customData
+      customData,
+      testEventCode
     };
 
     fetch('/api/conversions', {

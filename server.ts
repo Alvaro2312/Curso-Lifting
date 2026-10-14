@@ -65,13 +65,13 @@ async function startServer() {
   // Meta Conversions API (CAPI) endpoint
   app.post('/api/conversions', async (req, res) => {
     try {
-      const pixelId = process.env.META_PIXEL_ID;
+      const pixelId = process.env.META_PIXEL_ID || '1136249576021737';
       const accessToken = process.env.META_CAPI_TOKEN;
 
-      if (!pixelId || !accessToken) {
+      if (!accessToken) {
         return res.status(200).json({ 
           success: false, 
-          message: 'Variables META_PIXEL_ID o META_CAPI_TOKEN no configuradas en el entorno.' 
+          message: 'Falta la variable META_CAPI_TOKEN en el entorno.' 
         });
       }
 
@@ -81,7 +81,8 @@ async function startServer() {
         eventSourceUrl,
         fbp,
         fbc,
-        customData = {}
+        customData = {},
+        testEventCode = process.env.META_TEST_EVENT_CODE || 'TEST17356'
       } = req.body || {};
 
       const clientIp = (
@@ -92,12 +93,12 @@ async function startServer() {
 
       const userAgent = (req.headers['user-agent'] as string) || '';
 
-      const payload = {
+      const payload: Record<string, any> = {
         data: [
           {
             event_name: eventName,
             event_time: Math.floor(Date.now() / 1000),
-            event_id: eventId || `capi_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
+            event_id: eventId || `lead_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
             event_source_url: eventSourceUrl || (req.headers['referer'] as string) || 'https://warmiacademy.cl',
             action_source: 'website',
             user_data: {
@@ -117,6 +118,10 @@ async function startServer() {
         ]
       };
 
+      if (testEventCode) {
+        payload.test_event_code = testEventCode;
+      }
+
       const metaRes = await fetch(
         `https://graph.facebook.com/v19.0/${pixelId}/events?access_token=${accessToken}`,
         {
@@ -127,7 +132,7 @@ async function startServer() {
       );
 
       const result = await metaRes.json();
-      res.json({ success: true, result });
+      res.json({ success: true, result, event_id: payload.data[0].event_id, test_code: testEventCode });
     } catch (err: any) {
       console.error('Error sending Meta CAPI event:', err);
       res.status(500).json({ success: false, error: err?.message || String(err) });
