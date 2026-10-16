@@ -96,8 +96,8 @@ export default function App() {
         {/* 7. Who Is This For / Who Is This Not For */}
         <CourseAudience onOpenReservation={handleOpenReservation} />
 
-        {/* 8. Motivational ROI & Profitability Calculator */}
-        <RoiCalculator onOpenReservation={handleOpenReservation} />
+        {/* 8. Motivational ROI & Profitability Calculator (Ocultado temporalmente) */}
+        {/* <RoiCalculator onOpenReservation={handleOpenReservation} /> */}
 
         {/* 8. Satisfied Student Testimonials & Before/After Gallery */}
         <Testimonials />
@@ -105,8 +105,8 @@ export default function App() {
         {/* 9. Investment & Reservation Conditions ($120.000 / 50% reservation) */}
         <SchedulePricing onOpenReservation={handleOpenReservation} />
 
-        {/* 10. Frequently Asked Questions (FAQ) */}
-        <FaqSection />
+        {/* 10. Frequently Asked Questions (FAQ) (Ocultado temporalmente) */}
+        {/* <FaqSection /> */}
       </main>
 
       {/* Footer */}

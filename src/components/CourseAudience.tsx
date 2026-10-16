@@ -39,14 +39,15 @@ export const CourseAudience: React.FC<CourseAudienceProps> = ({ onOpenReservatio
             <span>Claridad y Compromiso Mutuo</span>
           </div>
           <h2 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--text-primary)] tracking-tight">
-            ¿Para Quién Es y Para Quién NO Es Este Curso?
+            <span className="lg:hidden">¿Para Quién Es Este Curso?</span>
+            <span className="hidden lg:inline">¿Para Quién Es y Para Quién NO Es Este Curso?</span>
           </h2>
           <p className="text-base text-[var(--text-secondary)] leading-relaxed">
             Queremos que tomes una decisión 100% segura e informada. Esta formación de alto nivel fue diseñada para quienes buscan verdadera excelencia profesional e independencia.
           </p>
         </div>
 
-        {/* 2-Column Grid */}
+        {/* 2-Column Grid on desktop, simplified single card on mobile */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
           {/* Column: Sí es para ti */}
           <div 
@@ -68,10 +69,10 @@ export const CourseAudience: React.FC<CourseAudienceProps> = ({ onOpenReservatio
                 </div>
               </div>
 
-              {/* Items List */}
+              {/* Items List - Top 4 on mobile, all on desktop */}
               <ul className="space-y-4">
                 {forWhom.map((item, idx) => (
-                  <li key={idx} className="flex items-center gap-3.5">
+                  <li key={idx} className={`items-center gap-3.5 ${idx >= 4 ? 'hidden lg:flex' : 'flex'}`}>
                     <div className="w-7 h-7 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center shrink-0">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                     </div>
@@ -84,9 +85,9 @@ export const CourseAudience: React.FC<CourseAudienceProps> = ({ onOpenReservatio
             </div>
           </div>
 
-          {/* Column: NO es para ti */}
+          {/* Column: NO es para ti (Visible en versión web / tablet grande) */}
           <div 
-            className="card-luxury p-6 sm:p-8 rounded-3xl flex flex-col justify-between relative overflow-hidden border-2"
+            className="hidden lg:flex card-luxury p-6 sm:p-8 rounded-3xl flex-col justify-between relative overflow-hidden border-2"
             style={{ borderColor: 'rgba(239, 68, 68, 0.2)' }}
           >
             <div>

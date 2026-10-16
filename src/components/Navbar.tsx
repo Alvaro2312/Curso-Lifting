@@ -28,15 +28,12 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: 'Expositores', href: '#expositores' },
     { label: 'Metodología', href: '#metodologia' },
     { label: '¿Para Quién?', href: '#para-quien' },
-    { label: 'Calculadora', href: '#calculadora' },
+    // { label: 'Calculadora', href: '#calculadora' },
     { label: 'Testimonios', href: '#testimonios' },
     { label: 'Reserva', href: '#reserva' },
   ];
 
-  const mobileNavLinks = [
-    ...desktopNavLinks,
-    { label: 'FAQ', href: '#faq' },
-  ];
+  const mobileNavLinks = desktopNavLinks.filter(l => l.href !== '#metodologia');
 
   return (
     <>

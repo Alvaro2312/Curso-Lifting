@@ -106,9 +106,6 @@ export const Curriculum: React.FC<CurriculumProps> = ({ onOpenReservation }) => 
                           {module.highlight}
                         </span>
                       </div>
-                      <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-0.5">
-                        {module.subtitle}
-                      </p>
                     </div>
                   </div>
 
@@ -133,10 +130,12 @@ export const Curriculum: React.FC<CurriculumProps> = ({ onOpenReservation }) => 
                     className="px-5 sm:px-6 pb-6 pt-2 border-t space-y-4 animate-in fade-in duration-200"
                     style={{ borderColor: 'var(--border-subtle)' }}
                   >
-                    <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                    <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
                       {module.description}
                     </p>
 
+                    {/* Descripción detallada punteada (Ocultada de la vista sin eliminar) */}
+                    {/*
                     <div 
                       className="rounded-xl p-4 sm:p-5 border"
                       style={{
@@ -157,6 +156,7 @@ export const Curriculum: React.FC<CurriculumProps> = ({ onOpenReservation }) => 
                         ))}
                       </ul>
                     </div>
+                    */}
                   </div>
                 )}
               </div>

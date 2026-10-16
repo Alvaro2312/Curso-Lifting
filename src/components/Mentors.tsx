@@ -93,9 +93,9 @@ export const Mentors: React.FC = () => {
                   {mentor.bio}
                 </p>
 
-                {/* Quote box */}
+                {/* Quote box - hidden on mobile, visible on tablet and desktop */}
                 <div 
-                  className="p-4 rounded-xl italic text-xs sm:text-sm border-l-3"
+                  className="hidden sm:block p-4 rounded-xl italic text-xs sm:text-sm border-l-3"
                   style={{
                     backgroundColor: 'var(--bg-subtle)',
                     color: 'var(--text-secondary)',

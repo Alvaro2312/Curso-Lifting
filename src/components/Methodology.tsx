@@ -36,7 +36,7 @@ export const Methodology: React.FC = () => {
   return (
     <section 
       id="metodologia"
-      className="py-16 sm:py-24 transition-colors duration-300"
+      className="hidden md:block py-16 sm:py-24 transition-colors duration-300"
       style={{ backgroundColor: 'var(--bg-secondary)' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

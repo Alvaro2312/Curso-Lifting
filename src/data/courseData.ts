@@ -66,7 +66,7 @@ export const MODULES_DATA: ModuleItem[] = [
     number: "01",
     title: "Biología y Anatomía de la Pestaña",
     subtitle: "La base médica y estética de un trabajo seguro",
-    description: "Conocer la estructura capilar, anatomía ocular y ciclos biológicos te permite trabajar con total seguridad, respetando la salud e integridad de la pestaña natural de cada persona.",
+    description: "La base médica y estética para trabajar con total seguridad: domina a fondo la estructura capilar, anatomía ocular y ciclos biológicos de las pestañas para garantizar resultados impecables con cero daño capilar, entregándole a tus clientas la máxima confianza profesional desde el primer día.",
     iconName: "Eye",
     highlight: "Cero daño capilar garantizado",
     topics: [
@@ -82,7 +82,7 @@ export const MODULES_DATA: ModuleItem[] = [
     number: "02",
     title: "Ciencia y Química del Procedimiento",
     subtitle: "El lifting es un proceso químico: domínalo como experta",
-    description: "El lifting de pestañas es una modificación química de los puentes de disulfuro. Comprenderás qué hace cada producto, cómo actúan los agentes reductores y fijadores, y cómo calcular tiempos exactos.",
+    description: "El lifting es un proceso químico de precisión: aprende a dominarlo como una verdadera experta conociendo la interacción de los puentes de disulfuro, agentes reductores y fijadores para calcular tiempos exactos según cada tipo de pestaña (sin tablas genéricas que queman), logrando curvaturas radiantes y saludables.",
     iconName: "FlaskConical",
     highlight: "Control absoluto de tiempos de exposición",
     topics: [
@@ -98,7 +98,7 @@ export const MODULES_DATA: ModuleItem[] = [
     number: "03",
     title: "Tipos de Moldes, Curvas y Tallas",
     subtitle: "La arquitectura de la mirada perfecta",
-    description: "Los moldes son la herramienta fundamental en el lifting. Determinan la dirección, curvatura y elevación que tendrá la pestaña. Aprenderás a elegir el molde ideal para cada anatomía de párpado.",
+    description: "La arquitectura de la mirada perfecta: aprende a seleccionar con precisión milimétrica el molde, curva y talla ideal según la morfología y tipo de párpado de cada clienta, logrando corregir miradas caídas y pestañas rebeldes con una elevación armónica, estilizada y elegante.",
     iconName: "Layers",
     highlight: "Elección precisa según anatomía del ojo",
     topics: [
@@ -114,7 +114,7 @@ export const MODULES_DATA: ModuleItem[] = [
     number: "04",
     title: "Diagnóstico Profesional y Marcas Alta Gama",
     subtitle: "Evaluar antes de tocar para garantizar resultados top",
-    description: "Aprenderás a identificar la porosidad de la pestaña, analizar la fibra antes de comenzar, seleccionar correctamente los productos según cada caso y conocerás las marcas de alta gama más destacadas del mercado internacional.",
+    description: "Evaluar antes de tocar para garantizar resultados top: diagnostica con criterio experto la porosidad, grosor y elasticidad de la fibra capilar, y conoce las marcas de alta gama más seguras y cotizadas del mercado internacional para invertir solo en insumos de calidad superior.",
     iconName: "Search",
     highlight: "Marcas premium y formulaciones seguras",
     topics: [
@@ -130,7 +130,7 @@ export const MODULES_DATA: ModuleItem[] = [
     number: "05",
     title: "Técnica Tradicional + Técnica Coreana",
     subtitle: "El secreto del efecto K-Beauty más cotizado",
-    description: "Protocolos comparativos paso a paso para dominar ambas tendencias. La técnica tradicional para curvaturas estándar y la técnica coreana para máxima elevación desde la raíz con efecto laminado espejo.",
+    description: "El secreto del efecto K-Beauty más cotizado del mercado: domina paso a paso tanto el lifting tradicional como la técnica coreana, logrando una elevación extrema en ángulo recto desde la raíz con efecto laminado espejo, nutrición intensa y tinturado profundo que enamorará a tus clientas.",
     iconName: "Sparkles",
     highlight: "Doble certificación práctica",
     topics: [
@@ -146,7 +146,7 @@ export const MODULES_DATA: ModuleItem[] = [
     number: "06",
     title: "Redes Sociales & Publicidad Digital",
     subtitle: "Por Álvaro Petrillo: Convierte tu talento en un negocio rentable",
-    description: "No basta con ser excelente lashista; necesitas que las clientas te encuentren y te elijan. Aprenderás estrategia en Instagram, Meta Business Suite, anuncios pagados y cómo transformar tus redes en tu principal canal de ingresos.",
+    description: "Por Álvaro Petrillo: Convierte tu talento en un negocio altamente rentable y con agenda llena. Aprende a crear tus campañas publicitarias en Meta Business Suite e Instagram, segmentando directamente en tu comuna o ciudad para atraer clientas reales dispuestas a pagar por un servicio profesional.",
     iconName: "TrendingUp",
     highlight: "Estrategia comercial de captación continua",
     topics: [

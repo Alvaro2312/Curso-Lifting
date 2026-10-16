@@ -34,7 +34,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenReservation }) => {
                   WARMI ACADEMY
                 </span>
                 <span className="text-[10px] tracking-widest uppercase text-[var(--accent-gold)] block font-semibold">
-                  Curso Lifting de Pestañas • 14 y 15 de Noviembre
+                  Curso Lifting de Pestañas
                 </span>
               </div>
             </div>
@@ -80,11 +80,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenReservation }) => {
                   ¿Para Quién Es?
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="#calculadora" className="hover:text-[var(--accent-gold)] transition-colors">
                   Calculadora de Ganancias
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a href="#testimonios" className="hover:text-[var(--accent-gold)] transition-colors">
                   Testimonios de Alumnas
@@ -100,11 +100,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenReservation }) => {
                   Reserva de Cupo ({COURSE_INFO.formattedPrice})
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="#faq" className="hover:text-[var(--accent-gold)] transition-colors">
                   Preguntas Frecuentes
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
 
