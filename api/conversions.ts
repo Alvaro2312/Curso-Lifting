@@ -33,7 +33,7 @@ export default async function handler(req: any, res: any) {
       fbp,
       fbc,
       customData = {},
-      testEventCode = process.env.META_TEST_EVENT_CODE || 'TEST17356'
+      testEventCode = process.env.META_TEST_EVENT_CODE || body.testEventCode || null
     } = body;
 
     const clientIp = (

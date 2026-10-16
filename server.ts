@@ -82,7 +82,7 @@ async function startServer() {
         fbp,
         fbc,
         customData = {},
-        testEventCode = process.env.META_TEST_EVENT_CODE || 'TEST17356'
+        testEventCode = process.env.META_TEST_EVENT_CODE || req.body?.testEventCode || null
       } = req.body || {};
 
       const clientIp = (

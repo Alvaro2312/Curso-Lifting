@@ -16,8 +16,8 @@ export function trackWhatsAppConversion(customEventName = 'Lead', customData: Re
     const fbp = getCookie('_fbp');
     const fbc = getCookie('_fbc');
 
-    // Extract test_event_code from URL parameters or default to current test code
-    let testEventCode = 'TEST17356';
+    // Extract test_event_code ONLY if explicitly passed in URL for debugging (otherwise production mode)
+    let testEventCode: string | null = null;
     if (typeof window !== 'undefined' && window.location.search) {
       const urlParams = new URLSearchParams(window.location.search);
       const codeFromUrl = urlParams.get('test_event_code');
